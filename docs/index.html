@@ -12,15 +12,7 @@
         this.noUsers = this.usersAux.length === 0 ? true : false
 
         if (this.noUsers) {
-          document.getElementById('js-noUsers').classList.add = 'is-visible'
-        }
-      },
-      hasUsers() {
-        console.log(this.usersAux.length > 0 ? true : false)
-        this.noUsers = this.usersAux.length === 0 ? true : false
-
-        if (this.noUsers) {
-          document.getElementById('js-noUsers').classList.add = 'is-visible'
+          document.getElementById('js-noUsers').classList.add('is-visible')
         }
       }
     }" x-init="
@@ -28,4 +20,4 @@
       usersAux = await (await fetch('https://jsonplaceholder.typicode.com/users')).json()
       document.getElementById('js-spinner').style.opacity = '0'
       this.noUsers = usersAux.length === 0 ? true : false
-    "><section class="search"><input type="search" name="search" class="search__input" x-on:keyup="filterUsers" placeholder="Search" x-model="searchTerm"/> <button type="button" class="search__button"><i class="icon-search"></i></button></section><div id="js-spinner" class="spinner"><div></div><div></div><div></div><div></div></div><section x-if="!noUsers" class="users"><template x-if="usersAux"><template x-for="user in usersAux"><div class="users__content"><div class="users__item users__item--user" x-text="user.name"></div><div class="users__item" x-text="user.company.name"></div><div class="users__item"><a class="users__link" :href="'mailto:' + user.email" x-text="user.email"></a></div><div class="users__item"><a class="users__link" :href="'tel:' + user.phone" x-text="user.phone"></a></div><div class="users__item" x-text="user.website"></div><div class="users__item users__item--address" x-text="user.address.city"></div><a href="tel:${users.phone}" class="users__button"><i class="icon-phone"></i> Contact</a></div></template></template></section><template x-if="noUsers"><section id="js-noUsers" class="no-results"><p class="no-results__msg">No results found</p></section></template></main><script src="bundle.js"></script></body></html>
+    "><section class="search"><input type="search" name="search" class="search__input" x-on:keyup="filterUsers()" placeholder="Search" x-model="searchTerm"/> <button type="button" class="search__button"><i class="icon-search"></i></button></section><div id="js-spinner" class="spinner"><div></div><div></div><div></div><div></div></div><section class="users"><template x-if="usersAux"><template x-for="user in usersAux"><div class="users__content"><div class="users__item users__item--user" x-text="user.name"></div><div class="users__item" x-text="user.company.name"></div><div class="users__item"><a class="users__link" :href="'mailto:' + user.email" x-text="user.email"></a></div><div class="users__item"><a class="users__link" :href="'tel:' + user.phone" x-text="user.phone"></a></div><div class="users__item" x-text="user.website"></div><div class="users__item users__item--address" x-text="user.address.city"></div><a href="tel:${users.phone}" class="users__button"><i class="icon-phone"></i> Contact</a></div></template></template></section><section x-data="users" x-show="noUsers" id="js-noUsers" class="no-results"><p class="no-results__msg">No results found</p></section></main><script src="bundle.js"></script></body></html>
