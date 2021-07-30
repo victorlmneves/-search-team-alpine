@@ -1,76 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Search POC Alpine.js</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css">
-  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-<link href="styles.css" rel="stylesheet"></head>
-<body>
-  <main
-    x-data="{
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Search POC Alpine.js</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet"><script defer="defer" src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script><link href="styles.css" rel="stylesheet"></head><body><main x-data="{
       searchTerm: '',
       users: [],
       usersAux: [],
+      noUsers: true,
       filterUsers() {
         this.usersAux = []
         let users = this.users.filter(user => user.name.toLowerCase().includes(this.searchTerm.toLowerCase()))
         users.map(user => {
           this.usersAux.push(user)
         })
-        
+        this.noUsers = this.usersAux.length === 0 ? true : false
+
+        if (this.noUsers) {
+          document.getElementById('js-noUsers').classList.add = 'is-visible'
+        }
       },
       hasUsers() {
-        return this.users.length > 0 ? true : false
+        console.log(this.usersAux.length > 0 ? true : false)
+        this.noUsers = this.usersAux.length === 0 ? true : false
+
+        if (this.noUsers) {
+          document.getElementById('js-noUsers').classList.add = 'is-visible'
+        }
       }
-    }"
-    x-init="
+    }" x-init="
       users = await (await fetch('https://jsonplaceholder.typicode.com/users')).json(),
       usersAux = await (await fetch('https://jsonplaceholder.typicode.com/users')).json()
-    "
-  >
-    <section class="search">
-      <form x-on:submit.prevent="filterUsers">
-        <input type="search" name="search" class="search__input" placeholder="Search" x-model="searchTerm" />
-        <button type="button" class="search__button">
-          <i class="icon-search"></i>
-        </button>
-      </form>
-    </section>
-    <div id="js-spinner" class="spinner">
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
-    <template x-if="!hasUsers">
-      <section class="no-results">
-        <p class="no-results__msg">No results found</p>
-      </section>
-    </template>
-    <section class="users">
-      <template x-if="usersAux">
-        <template x-for="user in usersAux">
-          <div class="users__content">
-            <div class="users__item users__item--user" x-text="user.name"></div>
-            <div class="users__item" x-text="user.company.name"></div>
-            <div class="users__item"><a class="users__link" :href="'mailto:' + user.email" x-text="user.email"></a></div>
-            <div class="users__item"><a class="users__link" :href="'tel:' + user.phone" x-text="user.phone"></a></div>
-            <div class="users__item" x-text="user.website"></div>
-            <div class="users__item users__item--address" x-text="user.address.city"></div>
-            <a href="tel:${users.phone}" class="users__button">
-              <i class="icon-phone"></i>
-              Contact
-            </a>
-          </div>
-        </template>
-      </template>
-    </section>
-  </main>
-<script src="bundle.js"></script></body>
-</html>
+      document.getElementById('js-spinner').style.opacity = '0'
+      this.noUsers = usersAux.length === 0 ? true : false
+    "><section class="search"><input type="search" name="search" class="search__input" x-on:keyup="filterUsers" placeholder="Search" x-model="searchTerm"/> <button type="button" class="search__button"><i class="icon-search"></i></button></section><div id="js-spinner" class="spinner"><div></div><div></div><div></div><div></div></div><section x-if="!noUsers" class="users"><template x-if="usersAux"><template x-for="user in usersAux"><div class="users__content"><div class="users__item users__item--user" x-text="user.name"></div><div class="users__item" x-text="user.company.name"></div><div class="users__item"><a class="users__link" :href="'mailto:' + user.email" x-text="user.email"></a></div><div class="users__item"><a class="users__link" :href="'tel:' + user.phone" x-text="user.phone"></a></div><div class="users__item" x-text="user.website"></div><div class="users__item users__item--address" x-text="user.address.city"></div><a href="tel:${users.phone}" class="users__button"><i class="icon-phone"></i> Contact</a></div></template></template></section><template x-if="noUsers"><section id="js-noUsers" class="no-results"><p class="no-results__msg">No results found</p></section></template></main><script src="bundle.js"></script></body></html>
