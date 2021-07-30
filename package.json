@@ -4,7 +4,7 @@
   "description": "Simple search POC using Alpine.js",
   "main": "index.js",
   "scripts": {
-    "watch": "webpack --mode=development --watch",
+    "watch": "webpack-dev-server --mode=development --watch --open",
     "build": "webpack --mode=production",
     "serve": "webpack-dev-server --open"
   },
