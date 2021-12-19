@@ -67,7 +67,7 @@
           users: [],
           usersAux: [],
           noUsers: true,
-          async fetchUsers() {
+          async fetchUsers () {
             await
             fetch('https://jsonplaceholder.typicode.com/users')
             .then(response => {
@@ -83,18 +83,21 @@
               console.error('Error:', error);
             })
           },
-          filterUsers() {
-            this.noUsers = this.usersAux.length === 0 ? true : false
+          hasUsers () {
+            return this.users.length > 0
+          },
+          filterUsers () {
+            this.noUsers = !this.hasUsers()
             this.usersAux = []
             let users = this.users.filter(user => user.name.toLowerCase().includes(this.searchTerm.toLowerCase()))
             users.map(user => {
               this.usersAux.push(user)
             })
             setTimeout(() => {
-              this.noUsers = this.usersAux.length === 0 ? false : true
+              this.noUsers = this.hasUsers()
             }, 20)
             setTimeout(() => {
-              this.noUsers = this.usersAux.length === 0 ? true : false
+              this.noUsers = !this.hasUsers()
             }, 40)
           }
         }))
