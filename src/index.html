@@ -77,27 +77,28 @@
             .then(data => {
               this.users = data
               this.usersAux = data
-              this.noUsers = data.length === 0 ? true : false
+              this.noUsers = !this.hasUsers(data)
             })
             .catch(function(error) {
               console.error('Error:', error);
             })
           },
-          hasUsers () {
-            return this.users.length > 0
+          hasUsers (users) {
+            return users.length > 0
           },
           filterUsers () {
-            this.noUsers = !this.hasUsers()
+            const users = this.users.filter(user => user.name.toLowerCase().includes(this.searchTerm.toLowerCase()))
+            this.noUsers = this.hasUsers(users)
             this.usersAux = []
-            let users = this.users.filter(user => user.name.toLowerCase().includes(this.searchTerm.toLowerCase()))
+
             users.map(user => {
               this.usersAux.push(user)
             })
             setTimeout(() => {
-              this.noUsers = this.hasUsers()
+              this.noUsers = this.hasUsers(users)
             }, 20)
             setTimeout(() => {
-              this.noUsers = !this.hasUsers()
+              this.noUsers = !this.hasUsers(users)
             }, 40)
           }
         }))
